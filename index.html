@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#101312" />
+    <title>Envtauri — Environment editor</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+    <script type="module" src="/src/main.ts" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <main class="workspace">
+        <header class="topbar">
+          <div class="breadcrumb"><span class="crumb-muted">Workspace</span><span class="slash">/</span><strong>Environment</strong><span class="window-dot"></span></div>
+          <div class="top-actions"><span class="saved-state" id="save-state"><i></i>All changes saved</span><button id="save-button" class="button button-primary" disabled><span>Save changes</span><kbd>Ctrl S</kbd></button><button class="icon-button" id="refresh-button" title="Reload environment">↻</button></div>
+        </header>
+        <section class="page-heading">
+          <div><div class="eyebrow"><span class="eyebrow-line"></span> ENVIRONMENT MANAGER</div><h1>Environment <em>variables</em></h1><p class="subtitle">Manage your app configuration in one place.</p></div>
+          <div class="heading-meta"><span class="status-dot"></span><span id="scope-summary">Loading environment…</span></div>
+        </section>
+        <section class="source-bar">
+          <div class="source-tabs" role="tablist" aria-label="Variable source">
+            <button class="source-tab active" data-source="dotenv"><span class="tab-glyph">{ }</span>.env file <span class="tab-count" id="count-dotenv">0</span></button>
+            <button class="source-tab" data-source="user"><span class="tab-glyph">◉</span>User <span class="tab-count" id="count-user">0</span></button>
+            <button class="source-tab" data-source="system"><span class="tab-glyph">▦</span>System <span class="tab-count" id="count-system">0</span><span id="lock-indicator" class="lock-indicator"></span></button>
+          </div>
+          <div class="source-controls"><label class="path-field"><span>FILE</span><input id="file-path" value=".env" aria-label="Environment file path"/><button id="open-file" title="Load .env file">↗</button></label><button id="load-file" class="button button-quiet">Load file</button></div>
+        </section>
+        <section class="notice hidden" id="permission-notice"><span class="notice-icon">!</span><div><strong>System variables are read-only</strong><p>Run Envtauri as administrator to edit System environment variables.</p></div><button class="notice-close" id="dismiss-notice" aria-label="Dismiss">×</button></section>
+        <section class="table-card">
+          <div class="table-toolbar"><div class="table-title"><h2 id="table-heading">.env variables</h2><span id="row-total" class="row-total">0 variables</span></div><div class="toolbar-actions"><label class="search"><span>⌕</span><input id="search" placeholder="Search variables…"/><kbd>/</kbd></label><button class="button button-outline" id="add-button"><span class="plus">＋</span> Add variable</button></div></div>
+          <div class="table-head"><span>KEY</span><span>VALUE</span><span></span></div>
+          <div class="variable-list" id="variable-list"></div>
+          <div class="empty-state hidden" id="empty-state"><span class="empty-icon">{ }</span><strong>No variables found</strong><p>Try another search or add your first variable.</p><button id="empty-add" class="button button-outline">＋ Add variable</button></div>
+          <div class="table-footer"><span id="footer-summary">Showing 0 variables</span><span class="keyboard-hint"><kbd>Enter</kbd> edit <span>·</span> <kbd>A</kbd> add <span>·</span> <kbd>⌘ S</kbd> save</span></div>
+        </section>
+        <footer class="app-footer"><span>ENVTAURI <span class="footer-version">v0.1.0</span></span><span class="footer-right"><span class="footer-dot"></span> Local environment</span></footer>
+      </main>
+    </div>
+    <div class="modal-backdrop hidden" id="modal-backdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="modal-top"><div class="modal-icon" id="modal-icon">＋</div><button class="icon-button modal-close" id="modal-close" aria-label="Close">×</button></div><div class="modal-heading"><div class="eyebrow">VARIABLE EDITOR</div><h2 id="modal-title">Add variable</h2><p id="modal-description">Add a new key and value to your environment.</p></div><form id="variable-form"><label class="form-field"><span>KEY <small>Required</small></span><input id="key-input" autocomplete="off" spellcheck="false" placeholder="e.g. API_BASE_URL" required/></label><label class="form-field value-field"><span>VALUE <button type="button" id="toggle-path" class="path-toggle hidden">Edit as list ↗</button></span><textarea id="value-input" rows="4" spellcheck="false" placeholder="Enter a value…"></textarea><span class="field-note">Values are stored locally and never shared.</span></label><div class="path-editor hidden" id="path-editor"><div class="path-editor-head"><span>PATH ENTRIES <small id="path-count">0 entries</small></span><button type="button" id="path-text-mode" class="text-button">Edit text…</button></div><div class="path-list-layout"><div id="path-items" class="path-items" role="listbox" aria-label="Path entries"></div><div class="path-controls"><button type="button" id="path-add" class="path-control">New</button><button type="button" id="path-edit" class="path-control">Edit</button><button type="button" id="path-delete" class="path-control">Delete</button><span></span><button type="button" id="path-up" class="path-control">Move up</button><button type="button" id="path-down" class="path-control">Move down</button></div></div><p class="path-help">Select an entry, then choose Edit or double-click it.</p></div><div class="modal-error hidden" id="modal-error"></div><div class="modal-actions"><button type="button" id="cancel-modal" class="button button-quiet">Cancel <kbd>Esc</kbd></button><button type="submit" class="button button-primary" id="submit-modal">Add variable <span>↗</span></button></div></form></section></div>
+    <div class="toast hidden" id="toast"></div>
+  </body>
+</html>
